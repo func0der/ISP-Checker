@@ -10,7 +10,7 @@ COMPOSE_FILE="$(MAKEFILE_PATH)docker-compose/docker-compose.yaml"
 default:
 	@echo "USAGE: make <TARGET>"
 	@echo ""
-	@echo "\t- install     : Bootstrap components in docker-compose"
+	@echo "\t- install     : Bootstrap components in docker compose"
 	@echo "\t- kube-install: Bootstrap components in K8s cluster."
 	@echo "\t- start       : Start entire stack."
 	@echo "\t- stop        : Stops entire stack."
@@ -28,7 +28,7 @@ docker-bootstrap:
 	@docker volume create --name=influxdb-storage
 	@docker volume create --name=grafana-storage
 
-	@docker-compose -f $(COMPOSE_FILE) up -d
+	@docker compose -f $(COMPOSE_FILE) up -d
 	@sleep 10
 
 provision:
@@ -58,16 +58,19 @@ kube-install:
 	kubectl apply -f https://raw.githubusercontent.com/fmdlc/ISP-Checker/master/kubernetes/ISP-Checker-deploy.yaml
 
 start:
-	docker-compose -f $(COMPOSE_FILE) up -d
+	docker compose -f $(COMPOSE_FILE) up -d
 
 stop:
-	docker-compose -f $(COMPOSE_FILE) stop
+	docker compose -f $(COMPOSE_FILE) stop
+
+log_tail:
+	docker compose -f $(COMPOSE_FILE) logs -f --tail 10
 
 restart:
-	docker-compose -f $(COMPOSE_FILE) restart
+	docker compose -f $(COMPOSE_FILE) restart
 
 prune:
-	docker-compose -f $(COMPOSE_FILE) stop
+	docker compose -f $(COMPOSE_FILE) stop
 	docker rm `docker ps -a -q`
 	docker volume rm influxdb-storage
 	docker volume rm grafana-storage
