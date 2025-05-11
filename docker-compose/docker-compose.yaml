@@ -22,6 +22,7 @@ services:
     image: tty0/isp_telegraf:1.15.3
     volumes:
       - "./telegraf/conf/telegraf.conf:/etc/telegraf/telegraf.conf"
+      - "./telegraf/bin/fritz_docsis_influx_lines.sh:/usr/bin/fritz_docsis_influx_lines.sh"
     env_file:
       - ./credentials.env
     links:

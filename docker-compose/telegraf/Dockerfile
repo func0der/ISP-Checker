@@ -12,6 +12,7 @@ COPY ./bin/entrypoint.sh /entrypoint.sh
 RUN apt-get update && apt-get install -y --no-install-recommends \
     mtr=0.92-2 \
     speedtest-cli=2.0.2-1+deb10u1 && \
+    jq=1.5+dfsg-2+b1 && \
     rm -rf /var/lib/apt/lists/* && \
     usermod -G video telegraf
 

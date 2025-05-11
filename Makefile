@@ -49,6 +49,11 @@ provision:
 		-s --location -XPOST 'http://admin:admin@127.0.0.1:3000/api/dashboards/db' \
 		--header 'Content-Type: application/json' -d @/app/raspberry-dashboard.json > /dev/null
 
+	@echo ">> Provisioning: Fritz!Box dashboard\n"
+	@docker run --network host -v "$(PWD)/docker-compose/grafana:/app" --rm curlimages/curl:7.73.0 \
+		-s --location -XPOST 'http://admin:admin@127.0.0.1:3000/api/dashboards/db' \
+		--header 'Content-Type: application/json' -d @/app/fritzbox-dashboard.json > /dev/null
+
 	@echo ">> Provisioning: Network preferences\n"
 	@docker run --network host -v "$(PWD)/docker-compose/grafana:/app" --rm curlimages/curl:7.73.0 \
 		-s --location -XPUT 'http://admin:admin@127.0.0.1:3000/api/user/preferences' \
