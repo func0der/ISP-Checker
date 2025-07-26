@@ -1,20 +1,19 @@
-FROM telegraf:1.15.3
+FROM telegraf:1.35.2-alpine
 
 ARG ARCH
 
-LABEL mantainer="Facu de la Cruz"
-LABEL email="fmdlc.unix@gmail.com"
+LABEL mantainer="func0der"
 LABEL project="ISP-Checker"
 LABEL component="telegraf"
 
 COPY ./bin/entrypoint.sh /entrypoint.sh
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    mtr=0.92-2 \
-    speedtest-cli=2.0.2-1+deb10u1 && \
-    jq=1.5+dfsg-2+b1 && \
-    rm -rf /var/lib/apt/lists/* && \
-    usermod -G video telegraf
+RUN apk update && apk add --no-cache \
+    mtr \
+    speedtest-cli \
+    jq && \
+    rm -rf /var/cache/apk/* && \
+    addgroup telegraf video
 
 EXPOSE 8125/udp 8092/udp 8094
 
