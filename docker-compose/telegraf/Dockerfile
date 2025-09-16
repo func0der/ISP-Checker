@@ -12,6 +12,9 @@ RUN apk update && apk add --no-cache \
     mtr \
     speedtest-cli \
     jq && \
+    # For simplicity and copied Fritz.Box script
+    bash && \
+    curl && \
     rm -rf /var/cache/apk/* && \
     addgroup telegraf video
 
