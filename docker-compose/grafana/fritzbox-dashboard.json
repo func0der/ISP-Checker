@@ -1,1292 +1,1487 @@
 {
   "dashboard": {
-    "__inputs": [{
-      "name": "DS_FRITZ_BOX",
-      "label": "fritzbox",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }],
-    "__elements": [],
-    "__requires": [{
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.0.0"
-    }, {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    }, {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }],
+    "__inputs": [
+      {
+        "name": "DS_FRITZ_BOX",
+        "label": "fritzbox",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "influxdb",
+        "pluginName": "InfluxDB"
+      }
+    ],
+    "__elements": {},
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "11.6.2"
+      },
+      {
+        "type": "datasource",
+        "id": "influxdb",
+        "name": "InfluxDB",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
+      }
+    ],
     "annotations": {
-      "list": [{
-        "builtIn": 1,
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
           "type": "dashboard"
-        },
-        "type": "dashboard"
-      }]
+        }
+      ]
     },
     "description": "Monitor FRITZ!Box DOCSIS",
     "editable": true,
     "fiscalYearStartMonth": 0,
-    "gnetId": 713,
     "graphTooltip": 2,
     "id": null,
     "links": [],
-    "liveNow": false,
-    "panels": [{
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Modulation (QAM)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "displayName": "Kanal ${__field.labels.channel}",
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "red",
-              "value": null
-            }, {
-              "color": "green",
-              "value": 32
-            }]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 33,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [{
+    "panels": [
+      {
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_FRITZ_BOX}"
         },
-        "groupBy": [{
-          "params": [
-            "$__interval"
-          ],
-          "type": "time"
-        }, {
-          "params": [
-            "null"
-          ],
-          "type": "fill"
-        }],
-        "hide": false,
-        "key": "Q-c3cf3bfe-2829-416d-820f-3f83507e420c-0",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"up\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: min)\r\n  ",
-        "refId": "A",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
-            ],
-            "type": "field"
-          }, {
-            "params": [],
-            "type": "mean"
-          }]
-        ],
-        "tags": []
-      }],
-      "title": "Kanal Modulation QAM (Senderichtung)",
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Modulation (QAM)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
             },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Modulation (QAM)",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
             },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+            "displayName": "Kanal ${__field.labels.channel}",
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red"
+                },
+                {
+                  "color": "green",
+                  "value": 32
+                }
+              ]
             }
           },
-          "displayName": "Kanal ${__field.labels.channel}",
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 33,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
           }
         },
-        "overrides": []
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "key": "Q-c3cf3bfe-2829-416d-820f-3f83507e420c-0",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"up\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: min)\r\n  ",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "title": "Kanal Modulation QAM (Senderichtung)",
+        "type": "timeseries"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 31,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [{
+      {
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_FRITZ_BOX}"
         },
-        "groupBy": [{
-          "params": [
-            "$__interval"
-          ],
-          "type": "time"
-        }, {
-          "params": [
-            "null"
-          ],
-          "type": "fill"
-        }],
-        "hide": false,
-        "key": "Q-f018d78e-e900-4e9b-a809-8858fdd6f673-0",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"down\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: min)\r\n  ",
-        "refId": "A",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
-            ],
-            "type": "field"
-          }, {
-            "params": [],
-            "type": "mean"
-          }]
-        ],
-        "tags": []
-      }],
-      "title": "Kanal Modulation QAM (Empfangsrichtung)",
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Modulation (QAM)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
             },
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Modulation (QAM)",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
             },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+            "displayName": "Kanal ${__field.labels.channel}",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
             }
           },
-          "displayName": "Alle Kanäle (Summe)",
-          "links": [],
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
-          },
-          "unit": "none"
+          "overrides": []
         },
-        "overrides": [{
-          "matcher": {
-            "id": "byName",
-            "options": "Total"
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 31,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
           },
-          "properties": [{
-            "id": "custom.drawStyle",
-            "value": "line"
-          }, {
-            "id": "color",
-            "value": {
-              "fixedColor": "orange",
-              "mode": "fixed"
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "key": "Q-f018d78e-e900-4e9b-a809-8858fdd6f673-0",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"down\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: min)\r\n  ",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "title": "Kanal Modulation QAM (Empfangsrichtung)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_FRITZ_BOX}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Modulation (QAM)",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepAfter",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "Alle Kanäle (Summe)",
+            "links": [],
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Total"
+              },
+              "properties": [
+                {
+                  "id": "custom.drawStyle",
+                  "value": "line"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "orange",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "__systemRef": "hideSeriesFrom",
+              "matcher": {
+                "id": "byNames",
+                "options": {
+                  "mode": "exclude",
+                  "names": [
+                    "Alle Kanäle (Summe)"
+                  ],
+                  "prefix": "All except:",
+                  "readOnly": true
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": true
+                  }
+                }
+              ]
             }
-          }]
-        }, {
-          "__systemRef": "hideSeriesFrom",
-          "matcher": {
-            "id": "byNames",
+          ]
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 32,
+        "interval": "1m",
+        "options": {
+          "legend": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "asc"
+          }
+        },
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"up\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: min)\r\n  ",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "title": "Gesamt Modulation QAM (Senderichtung)",
+        "transformations": [
+          {
+            "id": "calculateField",
             "options": {
-              "mode": "exclude",
-              "names": [
-                "Alle Kanäle (Summe)"
-              ],
-              "prefix": "All except:",
-              "readOnly": true
+              "mode": "reduceRow",
+              "reduce": {
+                "include": [
+                  "Modulation 1",
+                  "Modulation 2",
+                  "Modulation 3",
+                  "Modulation 4",
+                  "Modulation 5",
+                  "Modulation 6",
+                  "Modulation 7",
+                  "Modulation 8",
+                  "Modulation 9",
+                  "Modulation 10",
+                  "Modulation 12",
+                  "Modulation 13",
+                  "Modulation 14",
+                  "Modulation 15",
+                  "Modulation 16"
+                ],
+                "reducer": "sum"
+              },
+              "replaceFields": true
             }
-          },
-          "properties": [{
-            "id": "custom.hideFrom",
-            "value": {
-              "legend": false,
-              "tooltip": false,
-              "viz": true
-            }
-          }]
-        }]
+          }
+        ],
+        "type": "timeseries"
       },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 8
-      },
-      "hideTimeOverride": false,
-      "id": 32,
-      "interval": "1m",
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "asc"
-        }
-      },
-      "pluginVersion": "8.5.5",
-      "targets": [{
+      {
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_FRITZ_BOX}"
         },
-        "groupBy": [{
-          "params": [
-            "$__interval"
-          ],
-          "type": "time"
-        }, {
-          "params": [
-            "null"
-          ],
-          "type": "fill"
-        }],
-        "hide": false,
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"up\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: min)\r\n  ",
-        "refId": "A",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
-            ],
-            "type": "field"
-          }, {
-            "params": [],
-            "type": "mean"
-          }]
-        ],
-        "tags": []
-      }],
-      "title": "Gesamt Modulation QAM (Senderichtung)",
-      "transformations": [{
-        "id": "calculateField",
-        "options": {
-          "mode": "reduceRow",
-          "reduce": {
-            "include": [
-              "Modulation 1",
-              "Modulation 2",
-              "Modulation 3",
-              "Modulation 4",
-              "Modulation 5",
-              "Modulation 6",
-              "Modulation 7",
-              "Modulation 8",
-              "Modulation 9",
-              "Modulation 10",
-              "Modulation 12",
-              "Modulation 13",
-              "Modulation 14",
-              "Modulation 15",
-              "Modulation 16"
-            ],
-            "reducer": "sum"
-          },
-          "replaceFields": true
-        }
-      }],
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Modulation (QAM)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
             },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Modulation (QAM)",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "normal"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
             },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+            "displayName": "Alle Kanäle (Summe)",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
             }
           },
-          "displayName": "Alle Kanäle (Summe)",
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 34,
+        "options": {
+          "legend": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
           }
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 8
-      },
-      "id": 34,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [{
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_FRITZ_BOX}"
-        },
-        "groupBy": [{
-          "params": [
-            "$__interval"
-          ],
-          "type": "time"
-        }, {
-          "params": [
-            "null"
-          ],
-          "type": "fill"
-        }],
-        "hide": false,
-        "key": "Q-f018d78e-e900-4e9b-a809-8858fdd6f673-0",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"down\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last)\r\n",
-        "refId": "A",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
             ],
-            "type": "field"
-          }, {
-            "params": [],
-            "type": "mean"
-          }]
+            "hide": false,
+            "key": "Q-f018d78e-e900-4e9b-a809-8858fdd6f673-0",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"down\" and\r\n                        r._field == \"Modulation\"\r\n            )\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last)\r\n",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
         ],
-        "tags": []
-      }],
-      "title": "Gesamt Modulation QAM (Empfangsrichtung)",
-      "transformations": [{
-        "id": "calculateField",
-        "options": {
-          "alias": "Total",
-          "mode": "reduceRow",
-          "reduce": {
-            "include": [
-              "Modulation 1",
-              "Modulation 2",
-              "Modulation 3",
-              "Modulation 4",
-              "Modulation 5",
-              "Modulation 6",
-              "Modulation 7",
-              "Modulation 8",
-              "Modulation 9",
-              "Modulation 10",
-              "Modulation 11",
-              "Modulation 12",
-              "Modulation 13",
-              "Modulation 14",
-              "Modulation 15",
-              "Modulation 16",
-              "Modulation 17",
-              "Modulation 18",
-              "Modulation 19",
-              "Modulation 20",
-              "Modulation 21",
-              "Modulation 22",
-              "Modulation 23",
-              "Modulation 24",
-              "Modulation 25",
-              "Modulation 26",
-              "Modulation 27",
-              "Modulation 28",
-              "Modulation 29",
-              "Modulation 30",
-              "Modulation 31",
-              "Modulation 32",
-              "Modulation 33",
-              "Modulation 34",
-              "Modulation 35",
-              "Modulation 36",
-              "Modulation 37",
-              "Modulation 38",
-              "Modulation 39",
-              "Modulation 40"
-            ],
-            "reducer": "sum"
-          },
-          "replaceFields": true
-        }
-      }],
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Packet Loss",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "stepBefore",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "displayName": "Packet Loss max (${__field.labels.name} ${__field.labels.host})",
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
-          },
-          "unit": "percent"
-        },
-        "overrides": [{
-          "matcher": {
-            "id": "byFrameRefID",
-            "options": "B"
-          },
-          "properties": [{
-            "id": "custom.axisPlacement",
-            "value": "auto"
-          }, {
-            "id": "unit",
-            "value": "none"
-          }, {
-            "id": "custom.axisLabel",
-            "value": "RTT (ms)"
-          }, {
-            "id": "displayName",
-            "value": "RTT (${__field.labels.name})"
-          }]
-        }]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 15
-      },
-      "id": 35,
-      "maxDataPoints": 2000,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [{
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_FRITZ_BOX}"
-        },
-        "hide": false,
-        "query": "from(bucket: \"ping\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    //r.host == \"193.168.248.1\" and\r\n    //r.name = \"gateway\" and\r\n    r._field == \"loss\"\r\n  )\r\n  |> aggregateWindow(every: \r\n      v.windowPeriod, fn: max)\r\n      //2m, fn: mean)\r\n      //2m, fn: mean)\r\n  ",
-        "refId": "A"
-      }, {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_FRITZ_BOX}"
-        },
-        "hide": true,
-        "key": "Q-4651ec81-67d5-46a5-a28e-ebff61f8af6f-1",
-        "query": "from(bucket: \"ping\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    //r.host == \"193.168.248.1\" and\n    //r.name = \"gateway\" and\n    r._field == \"avg\"\n  )\n//|> aggregateWindow(every: 2m, fn: mean)\n\n",
-        "refId": "B"
-      }],
-      "title": "Ping",
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "korrigiert",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
-          },
-          "unit": "short"
-        },
-        "overrides": [{
-          "matcher": {
-            "id": "byName",
-            "options": "Fehler"
-          },
-          "properties": [{
-            "id": "custom.axisPlacement",
-            "value": "right"
-          }, {
-            "id": "custom.axisLabel",
-            "value": "Fehler"
-          }, {
-            "id": "displayName"
-          }]
-        }, {
-          "matcher": {
-            "id": "byName",
-            "options": "Fehler Total"
-          },
-          "properties": [{
-            "id": "custom.axisPlacement",
-            "value": "right"
-          }, {
-            "id": "custom.axisLabel",
-            "value": "Fehler"
-          }, {
-            "id": "custom.axisPlacement",
-            "value": "right"
-          }]
-        }, {
-          "__systemRef": "hideSeriesFrom",
-          "matcher": {
-            "id": "byNames",
+        "title": "Gesamt Modulation QAM (Empfangsrichtung)",
+        "transformations": [
+          {
+            "id": "calculateField",
             "options": {
-              "mode": "exclude",
-              "names": [
-                "korrFehler Total",
-                "Fehler Total"
-              ],
-              "prefix": "All except:",
-              "readOnly": true
+              "alias": "Total",
+              "mode": "reduceRow",
+              "reduce": {
+                "include": [
+                  "Modulation 1",
+                  "Modulation 2",
+                  "Modulation 3",
+                  "Modulation 4",
+                  "Modulation 5",
+                  "Modulation 6",
+                  "Modulation 7",
+                  "Modulation 8",
+                  "Modulation 9",
+                  "Modulation 10",
+                  "Modulation 11",
+                  "Modulation 12",
+                  "Modulation 13",
+                  "Modulation 14",
+                  "Modulation 15",
+                  "Modulation 16",
+                  "Modulation 17",
+                  "Modulation 18",
+                  "Modulation 19",
+                  "Modulation 20",
+                  "Modulation 21",
+                  "Modulation 22",
+                  "Modulation 23",
+                  "Modulation 24",
+                  "Modulation 25",
+                  "Modulation 26",
+                  "Modulation 27",
+                  "Modulation 28",
+                  "Modulation 29",
+                  "Modulation 30",
+                  "Modulation 31",
+                  "Modulation 32",
+                  "Modulation 33",
+                  "Modulation 34",
+                  "Modulation 35",
+                  "Modulation 36",
+                  "Modulation 37",
+                  "Modulation 38",
+                  "Modulation 39",
+                  "Modulation 40"
+                ],
+                "reducer": "sum"
+              },
+              "replaceFields": true
             }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_FRITZ_BOX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Packet Loss",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepBefore",
+              "lineStyle": {
+                "fill": "solid"
+              },
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "Packet Loss max (${__field.labels.name} ${__field.labels.host})",
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
           },
-          "properties": [{
-            "id": "custom.hideFrom",
-            "value": {
-              "legend": true,
-              "tooltip": false,
-              "viz": true
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byFrameRefID",
+                "options": "B"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "auto"
+                },
+                {
+                  "id": "unit",
+                  "value": "none"
+                },
+                {
+                  "id": "custom.axisLabel",
+                  "value": "RTT (ms)"
+                },
+                {
+                  "id": "displayName",
+                  "value": "RTT (${__field.labels.name})"
+                }
+              ]
             }
-          }]
-        }]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "id": 25,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
+          ]
         },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.5",
-      "targets": [{
-        "alias": "nicht korrigierbar",
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_FRITZ_BOX}"
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 15
         },
-        "groupBy": [{
-          "params": [
-            "1m"
-          ],
-          "type": "time"
-        }, {
-          "params": [
-            "null"
-          ],
-          "type": "fill"
-        }],
-        "hide": false,
-        "measurement": "docsis",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \n                        r.mode == \"down\"\n            )\n  |> filter(fn: (r) => r._field == \"korrFehler\")\n  |> drop(columns: [\"mode\",\"_measurement\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last)\n",
-        "rawQuery": false,
-        "refId": "A",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
-            ],
-            "type": "field"
-          }, {
-            "params": [],
-            "type": "sum"
-          }]
-        ],
-        "tags": [{
-          "key": "param",
-          "operator": "=",
-          "value": "nicht korrigierbare Fehler"
-        }]
-      }, {
-        "alias": "korrigierbar",
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_FRITZ_BOX}"
-        },
-        "groupBy": [{
-          "params": [
-            "1m"
-          ],
-          "type": "time"
-        }, {
-          "params": [
-            "null"
-          ],
-          "type": "fill"
-        }],
-        "hide": false,
-        "measurement": "docsis",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"down\"\r\n            )\r\n  |> filter(fn: (r) => r._field == \"Fehler\")\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last)\r\n",
-        "rawQuery": false,
-        "refId": "B",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
-            ],
-            "type": "field"
-          }, {
-            "params": [],
-            "type": "sum"
-          }]
-        ],
-        "tags": [{
-          "key": "param",
-          "operator": "=",
-          "value": "korrigierbare Fehler"
-        }]
-      }],
-      "title": "Fehler (Empfangsrichtung)",
-      "transformations": [{
-        "id": "calculateField",
+        "id": 35,
+        "maxDataPoints": 2000,
         "options": {
-          "alias": "korrFehler Total",
-          "mode": "reduceRow",
-          "reduce": {
-            "include": [
-              "korrFehler 1",
-              "korrFehler 2",
-              "korrFehler 3",
-              "korrFehler 4",
-              "korrFehler 5",
-              "korrFehler 6",
-              "korrFehler 7",
-              "korrFehler 8",
-              "korrFehler 9",
-              "korrFehler 10",
-              "korrFehler 11",
-              "korrFehler 12",
-              "korrFehler 13",
-              "korrFehler 14",
-              "korrFehler 15",
-              "korrFehler 16",
-              "korrFehler 17",
-              "korrFehler 18",
-              "korrFehler 19",
-              "korrFehler 20",
-              "korrFehler 21",
-              "korrFehler 22",
-              "korrFehler 23",
-              "korrFehler 24",
-              "korrFehler 25",
-              "korrFehler 26",
-              "korrFehler 27",
-              "korrFehler 28",
-              "korrFehler 29",
-              "korrFehler 30",
-              "korrFehler 31",
-              "korrFehler 32",
-              "korrFehler 33",
-              "korrFehler 34",
-              "korrFehler 35",
-              "korrFehler 36",
-              "korrFehler 37",
-              "korrFehler 38",
-              "korrFehler 39",
-              "korrFehler 40"
-            ],
-            "reducer": "sum"
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
           },
-          "replaceFields": false
-        }
-      }, {
-        "id": "calculateField",
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "hide": false,
+            "query": "from(bucket: \"ping\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    //r.host == \"193.168.248.1\" and\r\n    //r.name = \"gateway\" and\r\n    r._field == \"loss\"\r\n  )\r\n  |> aggregateWindow(every: \r\n      v.windowPeriod, fn: max)\r\n      //2m, fn: mean)\r\n      //2m, fn: mean)\r\n  ",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "hide": true,
+            "key": "Q-4651ec81-67d5-46a5-a28e-ebff61f8af6f-1",
+            "query": "from(bucket: \"ping\")\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\n  |> filter(fn: (r) =>\n    //r.host == \"193.168.248.1\" and\n    //r.name = \"gateway\" and\n    r._field == \"avg\"\n  )\n//|> aggregateWindow(every: 2m, fn: mean)\n\n",
+            "refId": "B"
+          }
+        ],
+        "title": "Ping",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_FRITZ_BOX}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "korrigiert",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "normal"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Fehler"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.axisLabel",
+                  "value": "Fehler"
+                },
+                {
+                  "id": "displayName"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Fehler Total"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.axisLabel",
+                  "value": "Fehler"
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                }
+              ]
+            },
+            {
+              "__systemRef": "hideSeriesFrom",
+              "matcher": {
+                "id": "byNames",
+                "options": {
+                  "mode": "exclude",
+                  "names": [
+                    "korrFehler Total",
+                    "Fehler Total"
+                  ],
+                  "prefix": "All except:",
+                  "readOnly": true
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": true,
+                    "tooltip": false,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 15
+        },
+        "id": 25,
         "options": {
-          "alias": "Fehler Total",
-          "mode": "reduceRow",
-          "reduce": {
-            "include": [
-              "Fehler 1",
-              "Fehler 2",
-              "Fehler 3",
-              "Fehler 4",
-              "Fehler 5",
-              "Fehler 6",
-              "Fehler 7",
-              "Fehler 8",
-              "Fehler 9",
-              "Fehler 10",
-              "Fehler 11",
-              "Fehler 12",
-              "Fehler 13",
-              "Fehler 14",
-              "Fehler 15",
-              "Fehler 16",
-              "Fehler 17",
-              "Fehler 18",
-              "Fehler 19",
-              "Fehler 20",
-              "Fehler 21",
-              "Fehler 22",
-              "Fehler 23",
-              "Fehler 24",
-              "Fehler 26",
-              "Fehler 27",
-              "Fehler 28",
-              "Fehler 29",
-              "Fehler 30",
-              "Fehler 31",
-              "Fehler 32",
-              "Fehler 33",
-              "Fehler 34",
-              "Fehler 35",
-              "Fehler 36",
-              "Fehler 37",
-              "Fehler 38",
-              "Fehler 39",
-              "Fehler 40"
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "alias": "nicht korrigierbar",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "1m"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
             ],
-            "reducer": "sum"
+            "hide": false,
+            "measurement": "fritzbox",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "from(bucket: v.bucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \n                        r.mode == \"down\"\n            )\n  |> filter(fn: (r) => r._field == \"correctedErrors\")\n  |> drop(columns: [\"mode\",\"_measurement\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last)\n",
+            "rawQuery": false,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "sum"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "param",
+                "operator": "=",
+                "value": "nicht korrigierbare Fehler"
+              }
+            ]
           },
-          "replaceFields": false
-        }
-      }],
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Power Level (dBmV)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+          {
+            "alias": "korrigierbar",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
             },
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+            "groupBy": [
+              {
+                "params": [
+                  "1m"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "fritzbox",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "from(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"down\"\r\n            )\r\n  |> filter(fn: (r) => r._field == \"Errors\")\r\n  |> drop(columns: [\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last)\r\n",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "sum"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "param",
+                "operator": "=",
+                "value": "korrigierbare Fehler"
+              }
+            ]
+          }
+        ],
+        "title": "Fehler (Empfangsrichtung)",
+        "transformations": [
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "korrFehler Total",
+              "mode": "reduceRow",
+              "reduce": {
+                "include": [
+                  "korrFehler 1",
+                  "korrFehler 2",
+                  "korrFehler 3",
+                  "korrFehler 4",
+                  "korrFehler 5",
+                  "korrFehler 6",
+                  "korrFehler 7",
+                  "korrFehler 8",
+                  "korrFehler 9",
+                  "korrFehler 10",
+                  "korrFehler 11",
+                  "korrFehler 12",
+                  "korrFehler 13",
+                  "korrFehler 14",
+                  "korrFehler 15",
+                  "korrFehler 16",
+                  "korrFehler 17",
+                  "korrFehler 18",
+                  "korrFehler 19",
+                  "korrFehler 20",
+                  "korrFehler 21",
+                  "korrFehler 22",
+                  "korrFehler 23",
+                  "korrFehler 24",
+                  "korrFehler 25",
+                  "korrFehler 26",
+                  "korrFehler 27",
+                  "korrFehler 28",
+                  "korrFehler 29",
+                  "korrFehler 30",
+                  "korrFehler 31",
+                  "korrFehler 32",
+                  "korrFehler 33",
+                  "korrFehler 34",
+                  "korrFehler 35",
+                  "korrFehler 36",
+                  "korrFehler 37",
+                  "korrFehler 38",
+                  "korrFehler 39",
+                  "korrFehler 40"
+                ],
+                "reducer": "sum"
+              },
+              "replaceFields": false
             }
           },
-          "displayName": "Kanal ${__field.labels.channel}",
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
-          },
-          "unit": "short"
-        },
-        "overrides": []
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Fehler Total",
+              "mode": "reduceRow",
+              "reduce": {
+                "include": [
+                  "Fehler 1",
+                  "Fehler 2",
+                  "Fehler 3",
+                  "Fehler 4",
+                  "Fehler 5",
+                  "Fehler 6",
+                  "Fehler 7",
+                  "Fehler 8",
+                  "Fehler 9",
+                  "Fehler 10",
+                  "Fehler 11",
+                  "Fehler 12",
+                  "Fehler 13",
+                  "Fehler 14",
+                  "Fehler 15",
+                  "Fehler 16",
+                  "Fehler 17",
+                  "Fehler 18",
+                  "Fehler 19",
+                  "Fehler 20",
+                  "Fehler 21",
+                  "Fehler 22",
+                  "Fehler 23",
+                  "Fehler 24",
+                  "Fehler 26",
+                  "Fehler 27",
+                  "Fehler 28",
+                  "Fehler 29",
+                  "Fehler 30",
+                  "Fehler 31",
+                  "Fehler 32",
+                  "Fehler 33",
+                  "Fehler 34",
+                  "Fehler 35",
+                  "Fehler 36",
+                  "Fehler 37",
+                  "Fehler 38",
+                  "Fehler 39",
+                  "Fehler 40"
+                ],
+                "reducer": "sum"
+              },
+              "replaceFields": false
+            }
+          }
+        ],
+        "type": "timeseries"
       },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 21
-      },
-      "hideTimeOverride": false,
-      "id": 23,
-      "interval": "1m",
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.5",
-      "targets": [{
-        "alias": "",
+      {
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_FRITZ_BOX}"
         },
-        "groupBy": [{
-          "params": [
-            "channel"
-          ],
-          "type": "tag"
-        }],
-        "hide": false,
-        "measurement": "docsis",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"up\"\r\n            )\r\n  |> filter(fn: (r) => r._field == \"PowerLevel\")\r\n  |> drop(columns: [\"_field\",\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean)",
-        "rawQuery": false,
-        "refId": "B",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Power Level (dBmV)",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepAfter",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "Kanal ${__field.labels.channel}",
+            "links": [],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 0,
+          "y": 21
+        },
+        "id": 23,
+        "interval": "1m",
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "alias": "",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "tag"
+              }
             ],
-            "type": "field"
-          }]
+            "hide": false,
+            "measurement": "fritzbox",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"up\"\r\n            )\r\n  |> filter(fn: (r) => r._field == \"PowerLevel\")\r\n  |> drop(columns: [\"_field\",\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "mode",
+                "operator": "=",
+                "value": "down"
+              },
+              {
+                "condition": "AND",
+                "key": "param",
+                "operator": "=",
+                "value": "Power Level [dBmV]"
+              }
+            ]
+          }
         ],
-        "tags": [{
-          "key": "mode",
-          "operator": "=",
-          "value": "down"
-        }, {
-          "condition": "AND",
-          "key": "param",
-          "operator": "=",
-          "value": "Power Level [dBmV]"
-        }]
-      }],
-      "title": "Power Level (Senderichtung)",
-      "type": "timeseries"
-    }, {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_FRITZ_BOX}"
+        "title": "Power Level (Senderichtung)",
+        "type": "timeseries"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "Power Level (dBmV)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "displayName": "Kanal ${__field.labels.channel}",
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{
-              "color": "green",
-              "value": null
-            }, {
-              "color": "red",
-              "value": 80
-            }]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 21
-      },
-      "hideTimeOverride": false,
-      "id": 27,
-      "interval": "1m",
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "8.5.5",
-      "targets": [{
-        "alias": "",
+      {
         "datasource": {
           "type": "influxdb",
           "uid": "${DS_FRITZ_BOX}"
         },
-        "groupBy": [{
-          "params": [
-            "channel"
-          ],
-          "type": "tag"
-        }],
-        "hide": false,
-        "measurement": "docsis",
-        "orderByTime": "ASC",
-        "policy": "default",
-        "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"docsis\" and \r\n                        r.mode == \"down\"\r\n            )\r\n  |> filter(fn: (r) => r._field == \"PowerLevel\")\r\n  |> drop(columns: [\"_field\",\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last)",
-        "rawQuery": false,
-        "refId": "B",
-        "resultFormat": "time_series",
-        "select": [
-          [{
-            "params": [
-              "value"
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Power Level (dBmV)",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepAfter",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "displayName": "Kanal ${__field.labels.channel}",
+            "links": [],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 12,
+          "x": 12,
+          "y": 21
+        },
+        "id": 27,
+        "interval": "1m",
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.6.2",
+        "targets": [
+          {
+            "alias": "",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "${DS_FRITZ_BOX}"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "tag"
+              }
             ],
-            "type": "field"
-          }]
+            "hide": false,
+            "measurement": "fritzbox",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "// v.windowPeriod is a variable referring to the current optimized window period (currently: $interval)\r\nfrom(bucket: v.bucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>  r._measurement == \"fritzbox\" and \r\n                        r.mode == \"down\"\r\n            )\r\n  |> filter(fn: (r) => r._field == \"PowerLevel\")\r\n  |> drop(columns: [\"_field\",\"mode\",\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last)",
+            "rawQuery": false,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "mode",
+                "operator": "=",
+                "value": "down"
+              },
+              {
+                "condition": "AND",
+                "key": "param",
+                "operator": "=",
+                "value": "Power Level [dBmV]"
+              }
+            ]
+          }
         ],
-        "tags": [{
-          "key": "mode",
-          "operator": "=",
-          "value": "down"
-        }, {
-          "condition": "AND",
-          "key": "param",
-          "operator": "=",
-          "value": "Power Level [dBmV]"
-        }]
-      }],
-      "title": "Power Level (Empfangsrichtung)",
-      "type": "timeseries"
-    }],
+        "title": "Power Level (Empfangsrichtung)",
+        "type": "timeseries"
+      }
+    ],
     "refresh": "",
-    "schemaVersion": 36,
-    "style": "dark",
+    "schemaVersion": 41,
     "tags": [],
     "templating": {
       "list": []
     },
     "time": {
-      "from": "now-12h",
+      "from": "now-5m",
       "to": "now"
     },
     "timepicker": {
@@ -1301,23 +1496,12 @@
         "1h",
         "2h",
         "1d"
-      ],
-      "time_options": [
-        "5m",
-        "15m",
-        "1h",
-        "6h",
-        "12h",
-        "24h",
-        "2d",
-        "7d",
-        "30d"
       ]
     },
     "timezone": "",
     "title": "Cable Modem + Ping Status",
     "uid": "LBNE1T67z",
-    "version": 63,
+    "version": 2,
     "weekStart": ""
   }
 }
