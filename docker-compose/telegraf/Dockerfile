@@ -11,12 +11,12 @@ COPY ./bin/entrypoint.sh /entrypoint.sh
 RUN apk update && apk add --no-cache \
     mtr \
     speedtest-cli \
-    jq && \
+    jq \
     # For simplicity and copied Fritz.Box script
-    bash && \
-    curl && \
-    rm -rf /var/cache/apk/* && \
-    addgroup telegraf video
+    bash \
+    curl \
+    && rm -rf /var/cache/apk/* \
+    && addgroup telegraf video
 
 EXPOSE 8125/udp 8092/udp 8094
 
