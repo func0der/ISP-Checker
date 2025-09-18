@@ -1,6 +1,6 @@
 <img src="./img/logo.png" />
 
-![License](https://img.shields.io/github/license/func0der/ISP-Checker) ![LastCommit](https://img.shields.io/github/last-commit/func0der/ISP-Checker) ![Build](https://github.com/func0der/ISP-Checker/workflows/Build/badge.svg)
+![License](https://img.shields.io/github/license/func0der/ISP-Checker) ![LastCommit](https://img.shields.io/github/last-commit/func0der/ISP-Checker) ![Build](https://github.com/func0der/ISP-Checker/workflows/Docker/badge.svg)
 > A `docker-compose` and `kubernetes` stack to run a set of ISP controls and collect metrics on a [Raspberry Pi](https://www.raspberrypi.org/) or `amd64` architecture.
 
 Originally by: https://github.com/fmdlc/ISP-Checker
