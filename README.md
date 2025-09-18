@@ -1,10 +1,9 @@
 <img src="./img/logo.png" />
 
-![License](https://img.shields.io/github/license/fmdlc/ISP-Checker) ![LastCommit](https://img.shields.io/github/last-commit/fmdlc/ISP-Checker) ![Build](https://github.com/fmdlc/ISP-Checker/workflows/Build/badge.svg) ![Docker](https://img.shields.io/badge/Docker-19.03.13-blue)
-
+![License](https://img.shields.io/github/license/func0der/ISP-Checker) ![LastCommit](https://img.shields.io/github/last-commit/func0der/ISP-Checker) ![Build](https://github.com/func0der/ISP-Checker/workflows/Build/badge.svg)
 > A `docker-compose` and `kubernetes` stack to run a set of ISP controls and collect metrics on a [Raspberry Pi](https://www.raspberrypi.org/) or `amd64` architecture.
 
-[![Linkedin](https://i.stack.imgur.com/gVE0j.png) LinkedIn](https://www.linkedin.com/in/fmdlc) [![GitHub](https://i.stack.imgur.com/tskMh.png) GitHub](https://github.com/fmdlc)
+Originally by: https://github.com/fmdlc/ISP-Checker
 
 ## YouTube demo
 [![](http://img.youtube.com/vi/BnQDnCNG1Bs/0.jpg)](http://www.youtube.com/watch?v=BnQDnCNG1Bs "ISP-Checker: Blame your ISP with evidence")
@@ -49,7 +48,7 @@ You can easily import this dashboard into your current Grafana installation gett
 ### kubernetes
 Kubernetes is in `beta` version. To install just run:
 ```bash
-$ kubectl apply -f https://raw.githubusercontent.com/fmdlc/ISP-Checker/master/kubernetes/ISP-Checker-deploy.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/func0der/ISP-Checker/master/kubernetes/ISP-Checker-deploy.yaml
 ```
 You need to expose the `grafana` service to get access. You can do it by creating a `LoadBalancer` service type or by using an `IngressController`.
 
@@ -58,10 +57,10 @@ You need to expose the `grafana` service to get access. You can do it by creatin
 It's a super useful dashboard to monitor Hardware and Operating system stadistics and extends `ISP-Checker` features and contains multiples sections with the goal to monitor a full Raspberry Pi board or boards and has some sections to monitor the Linux and machine overall performance, and temperature.
 
 <div align="center">
-<img src="https://github.com/fmdlc/ISP-Checker/blob/master/img/img_5.png?raw=true" />
+<img src="https://github.com/func0der/ISP-Checker/blob/master/img/img_5.png?raw=true" />
 </div>
 
-<ins>For detailed Kubernetes instructions check:</ins> [here](https://github.com/fmdlc/ISP-Checker/blob/master/kubernetes/README.md).
+<ins>For detailed Kubernetes instructions check:</ins> [here](https://github.com/func0der/ISP-Checker/blob/master/kubernetes/README.md).
 
 ### Configuration
 Make sure you have the [Docker-CE](https://phoenixnap.com/kb/docker-on-raspberry-pi) and [cURL](https://curl.haxx.se/) installed on your *Raspberry Pi*. If you don't, install it using your prefer method.
@@ -168,9 +167,9 @@ But, latency only paints half the picture. Imagine yourself in a conversation wh
 ---
 
 <div align="center">
-![https://github.com/fmdlc/ISP-Checker/blob/master/img/img_4.png?raw=true](https://github.com/fmdlc/ISP-Checker/blob/master/img/img_4.png?raw=true)
+![https://github.com/func0der/ISP-Checker/blob/master/img/img_4.png?raw=true](https://github.com/func0der/ISP-Checker/blob/master/img/img_4.png?raw=true)
 
-![https://github.com/fmdlc/ISP-Checker/blob/master/img/img_1.png?raw=true](https://github.com/fmdlc/ISP-Checker/blob/master/img/img_1.png?raw=true)
+![https://github.com/func0der/ISP-Checker/blob/master/img/img_1.png?raw=true](https://github.com/func0der/ISP-Checker/blob/master/img/img_1.png?raw=true)
 </div>
 
 ## ToDo
@@ -184,7 +183,7 @@ But, latency only paints half the picture. Imagine yourself in a conversation wh
 
 ## Stargazers
 
-[![Stargazers over time](https://starchart.cc/fmdlc/ISP-Checker.svg)](https://starchart.cc/fmdlc/ISP-Checker)
+[![Stargazers over time](https://starchart.cc/func0der/ISP-Checker.svg)](https://starchart.cc/func0der/ISP-Checker)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
