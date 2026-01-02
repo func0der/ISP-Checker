@@ -1,3 +1,8 @@
+> [!WARNING]
+> This is a highly customized repository forked from https://github.com/fmdlc/ISP-Checker
+> I can not at this point guarantee anything. Please do only use this if you completely
+> understand what is going on.
+
 <img src="./img/logo.png" />
 
 ![License](https://img.shields.io/github/license/func0der/ISP-Checker) ![LastCommit](https://img.shields.io/github/last-commit/func0der/ISP-Checker) ![Build](https://github.com/func0der/ISP-Checker/workflows/Docker/badge.svg)
