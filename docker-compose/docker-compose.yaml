@@ -22,7 +22,6 @@ services:
     image: ghcr.io/func0der/isp-checker
     volumes:
       - "./telegraf/conf/telegraf.conf:/etc/telegraf/telegraf.conf"
-      - "./telegraf/bin/fritz_docsis_influx_lines.sh:/usr/bin/fritz_docsis_influx_lines.sh"
     env_file:
       - ./credentials.env
     links:

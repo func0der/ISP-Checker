@@ -20,6 +20,8 @@ RUN apk update && apk add --no-cache \
 
 EXPOSE 8125/udp 8092/udp 8094
 
+COPY ./bin/fritz_docsis_influx_lines.sh /usr/bin/fritz_docsis_influx_lines.sh
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["telegraf"]
