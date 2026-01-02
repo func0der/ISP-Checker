@@ -178,6 +178,7 @@ But, latency only paints half the picture. Imagine yourself in a conversation wh
 </div>
 
 ## ToDo
+- [ ] Use official speedtest.net cli tool (not open source) or librespeed's cli tool
 - [X] Enable Network-dashboard as default dashboard.
 - [ ] Allows users to select their metrics endpoint.
 - [ ] Allow users to select their Grafana Org.
