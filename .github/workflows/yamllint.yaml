@@ -15,7 +15,7 @@ jobs:
           file_or_dir: ./kubernetes/yaml/ 
           config_file: ./.yamllint     
       - name: kube-score check
-        uses: piraces/kube-score-ga@v0.1.1
+        uses: piraces/kube-score-ga@v0.1.3
         with:
           manifests-folders: "./kubernetes/yaml/*.yaml"
           ignore-exit-code: true
